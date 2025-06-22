@@ -451,6 +451,37 @@ setInterval(draw, 33);
 </section>
 
 <section id="contact">
+  <!-- ƏLAQƏ FORMU (EmailJS ilə) -->
+<section id="contact" class="section" style="max-width: 900px; margin: 60px auto; padding: 20px; background: #0d0d0d; border-radius: 12px;">
+  <h2 style="border-bottom: 2px solid #00ffff; padding-bottom: 10px;">Bizimlə əlaqə</h2>
+  <form id="contact-form">
+    <input type="text" name="name" placeholder="Adınız" required style="width:100%;padding:10px;margin:10px 0;border-radius:5px;background:#111;color:#00ffff;border:none;">
+    <input type="email" name="email" placeholder="Email ünvanınız" required style="width:100%;padding:10px;margin:10px 0;border-radius:5px;background:#111;color:#00ffff;border:none;">
+    <textarea name="message" rows="5" placeholder="Mesajınız..." required style="width:100%;padding:10px;margin:10px 0;border-radius:5px;background:#111;color:#00ffff;border:none;"></textarea>
+    <button type="submit" style="padding:10px 20px;background:#00ffff;border:none;color:#000;font-weight:bold;border-radius:5px;cursor:pointer;">Göndər</button>
+  </form>
+</section>
+
+<!-- EmailJS skripti -->
+<script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+<script>
+  (function(){
+    emailjs.init("PX9Yfi5tiwVoN9te0"); // public key
+  })();
+
+  document.getElementById("contact-form").addEventListener("submit", function(e) {
+    e.preventDefault();
+    emailjs.sendForm("service_fgqx7ca", "template_0is242j", this)
+      .then(function() {
+        alert("Mesaj uğurla göndərildi ✅");
+        document.getElementById("contact-form").reset();
+      }, function(error) {
+        alert("Xəta baş verdi ❌");
+        console.log(error);
+      });
+  });
+</script>
+
   <h2>Əlaqə</h2>
   <p>Email: <a href="mailto:qasimoveli211@gmail.com">qasimoveli211@gmail.com</a></p>
   <p>
