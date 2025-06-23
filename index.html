@@ -1,1 +1,132 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QASIMOV CYBER</title>
+  <style>
+    body {
+      margin: 0;
+      background-color: black;
+      color: #00ffff;
+      font-family: Arial, sans-serif;
+    }
+
+    canvas#matrix-canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -1;
+      background-color: black;
+    }
+
+    .typing-effect {
+      font-size: 2em;
+      color: #00ffff;
+      white-space: nowrap;
+      overflow: hidden;
+      border-right: .15em solid #00ffff;
+      width: 100%;
+      animation:
+        typing 4s steps(40, end),
+        blink-caret .75s step-end infinite;
+    }
+
+    @keyframes typing {
+      from { width: 0 }
+      to { width: 100% }
+    }
+
+    @keyframes blink-caret {
+      from, to { border-color: transparent }
+      50% { border-color: #00ffff }
+    }
+
+    #soundToggle {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      z-index: 1000;
+      background: #00ffff;
+      color: black;
+      padding: 8px 12px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="matrix-canvas"></canvas>
+
+<section style="text-align:center; padding-top: 50px;">
+  <div class="typing-effect">Sisteminizi qorumağa başlayırıq...</div>
+</section>
+
+<audio id="bgAudio" loop>
+  <source src="data:audio/mpeg;base64,//TUQxAAAAANIAAAAAExBTUUzLjk4LjIAAAAAAAAAAAAAAAADQgAAZGF0YQAAAAA=" type="audio/mpeg">
+</audio>
+
+<button id="soundToggle">🔊</button>
+
+<script>
+const canvas = document.getElementById('matrix-canvas');
+const ctx = canvas.getContext('2d');
+canvas.height = window.innerHeight;
+canvas.width = window.innerWidth;
+
+let letters = '01'.split('');
+let fontSize = 14;
+let columns = canvas.width / fontSize;
+let drops = [];
+for(let x = 0; x < columns; x++) drops[x] = 1;
+
+function draw() {
+  ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = '#00ffff';
+  ctx.font = fontSize + 'px monospace';
+  for(let i = 0; i < drops.length; i++) {
+    let text = letters[Math.floor(Math.random()*letters.length)];
+    ctx.fillText(text, i*fontSize, drops[i]*fontSize);
+    if(drops[i]*fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+    drops[i]++;
+  }
+}
+setInterval(draw, 33);
+
+// Musiqi başlatma
+document.addEventListener("DOMContentLoaded", function () {
+  const audio = document.getElementById("bgAudio");
+  const toggleBtn = document.getElementById("soundToggle");
+  if (!audio || !toggleBtn) return;
+
+  function startMusic() {
+    audio.play().then(() => {
+      toggleBtn.textContent = "🔊";
+    }).catch(() => {});
+    document.removeEventListener("click", startMusic);
+    document.removeEventListener("touchstart", startMusic);
+  }
+
+  document.addEventListener("click", startMusic);
+  document.addEventListener("touchstart", startMusic);
+
+  toggleBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    if (audio.paused) {
+      audio.play();
+      toggleBtn.textContent = "🔊";
+    } else {
+      audio.pause();
+      toggleBtn.textContent = "🔇";
+    }
+  });
+});
+</script>
+
+</body>
+</html>
 
